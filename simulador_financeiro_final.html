@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR" id>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Financeiro Final</title>
+</head>
+
+<body>
+    <h1>OrquiTech - Simulador Financeiro </h1>
+
+    Espécie de Orquidea plantada: <br>
+    <select id="select_orquidea">
+        <option value="Phalaenopsis">Phalaenopsis</option>
+        <option value="Cattleya">Cattleya</option>
+        <option value="Vanda">Vanda</option>
+    </select>
+    <br><br>
+
+    Tamanho da Plantação: <br>
+    <select id="select_plantacao">
+        <option value="Pequena">Pequena</option>
+        <option value="Media">Média</option>
+        <option value="Grande">Grande</option>
+    </select>
+    <br><br>
+    Quantidade de Orquideas plantadas: <br>
+    <input type="number" id="input_qtdOrquideasPlantadas">
+    <br><br>
+
+    Gastos gerais: <br>
+    R$ <input type="number" id="input_gastos">
+    <br><br>
+
+    Valor de Venda por unidade: <br>
+    R$ <input type="number" id="input_valorUnidade">
+    <br><br>
+
+    <button onclick="calcular()">Calcular</button> 
+    <br><br>
+
+    <div id="div_mensagem"></div>
+</body>
+
+</html>
+<script>
+    var valMedioCattleya = 105;
+    var valMedioVanda = 250;
+    var valMedioPhalaenopsis = 70;
+
+    var areaPequena = 200;
+    var areaMedia = 350;
+    var areagrande = 9000;
+
+    function calcular() {
+        var orquidea = select_orquidea.value
+        var quantidadePlantada = Number(input_qtdOrquideasPlantadas.value);
+
+        var tamanhoPlantacao = select_plantacao.value;
+
+        var gastos = Number(input_gastos.value);
+        var valorVenda = Number(input_valorUnidade.value);
+
+        var lucroBrutoSuposto = quantidadePlantada * valorVenda;
+
+        var lucroBrutoSemServico = lucroBrutoSuposto - ((quantidadePlantada * 0.12) * valorVenda) - gastos;
+        var lucroBrutoComServico = lucroBrutoSuposto - ((quantidadePlantada * 0.06) * valorVenda) - gastos;
+
+        div_mensagem.innerHTML = `Calculo feito com sucesso !<br>Seu lucro atual chega em 
+                torno de <b>R$${lucroBrutoSemServico.toFixed(2)}</b> com todos os dados fornecidos, mas isso sem
+                nosso serviço ! <br>Já com nosso serviço de monitoramento seu lucro pode chegar em até
+                <span style="color: green;"><b>R$${lucroBrutoComServico.toFixed(2)}</b></span><br><br>`;
+
+        var area = 0;
+        if (tamanhoPlantacao == "Pequena") {
+            area = areaPequena;
+            if (quantidadePlantada > (area + 25)) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            } else if (quantidadePlantada < (area - 25)) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            }
+        } else if (tamanhoPlantacao == "Media") {
+            area = areaMedia;
+            if (quantidadePlantada > (area + 25)) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            } else if (quantidadePlantada < (area - 25)) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            }
+        } else if (tamanhoPlantacao == "Grande") {
+            area = areaGrande;
+            if (quantidadePlantada > (area + 25)) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            } else if (quantidadePlantada < (area - 25)) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            }
+        }
+
+        if (orquidea == "Cattleya") {
+            if (valorVenda > valMedioCattleya) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria abaixar mais o preço para se estabilizar no valor médio do mercado, poderia ser diminuido em <b>R$${valorVenda - valMedioCattleya}</b>`
+            }
+            if (valorVenda < valMedioCattleya) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria aumentar mais o preço para se estabilizar no valor médio do mercado, poderia ser aumentado <b>R$${alMedioCattleya - valorVenda}</b>`
+            }
+        } else if (orquidea == "Vanda") {
+            if (valorVenda > valMedioVanda) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria abaixar mais o preço para se estabilizar no valor médio do mercado, poderia ser diminuido em <b>R$${valorVenda - valMedioVanda}</b>`
+            }
+            if (valorVenda < valMedioVanda) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria aumentar mais o preço para se estabilizar no valor médio do mercado, poderia ser aumentado <b>R$${valMedioCattleya - valorVenda}</b>`
+            }
+        } else if (orquidea == "Phalaenopsis") {
+            if (valorVenda > valMedioPhalaenopsis) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria abaixar mais o preço para se estabilizar no valor médio do mercado, poderia ser diminuido em <b>R$${valorVenda - valMedioPhalaenopsis}</b>`
+            }
+            if (valorVenda < valMedioPhalaenopsis) {
+                div_mensagem.innerHTML += `<b>Dica:</b> Você deveria aumentar mais o preço para se estabilizar no valor médio do mercado, poderia ser aumentado <b>R$${valMedioPhalaenopsis - valorVenda}</b>`
+            }
+        }
+
+    }
+</script>
