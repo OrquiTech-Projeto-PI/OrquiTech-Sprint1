@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Financeiro</title>
+    <style>
+        * {
+            font-family:Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulador Financeiro</h1>
+    <br><br>
+
+    Tipo de Orquídea cultivada:
+    <select id="select_orquidea">
+        <option value="Phalaenopsis">Phalaenopsis</option>
+        <option value="Cattleya">Cattleya</option>
+        <option value="Vanda">Vanda</option>
+    </select><br><br>
+
+    Porte de Orquídea cultivada:
+    <select id="select_tamanho">
+        <option value="Pequena">Pequena</option>
+        <option value="Media">Média</option>
+        <option value="Grande">Grande</option>
+    </select><br><br>
+
+    Quantidade de Orquídeas cultivadas (em média):
+    <input type="number" id="input_qtdOrquidea">
+    <br><br>
+
+    Quantidade de Funcionários que cuidam dessa plantação (em média):
+    <input type="number" id="input_qtdPessoas">
+    <br><br>
+
+    Valor pretendido para vender cada unidade: R$
+    <input type="number" id="input_valorUni">
+    <br><br>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div id="div_mensagem"></div>
+
+</body>
+</html>
+<script>
+    var valorCompOrquidea = 0; 
+    //valor comparativo do preço médio da orquidea selecionada sobre o preço que o cliente irá vender
+
+    function calcular() {
+        var orquideaSelecionada = select_orquidea.value;
+        var porteSelecionado = select_tamanho.value;
+        var qtdOrquidea = Number(input_qtdOrquidea.value);
+        var qtdFuncionario = Number(input_qtdPessoas.value);
+        var valorUnidade = Number(input_valorUni.value);
+
+        if (orquideaSelecionada == "Phalaenopsis") {
+            if (porteSelecionado == "Pequena") {
+                valorCompOrquidea = 75;
+            } else if (porteSelecionado == "Media") {
+                valorCompOrquidea = 100;
+            } else if (porteSelecionado == "Grande") {
+                valorCompOrquidea = 125;
+            }
+
+            if (valorUnidade < 20) {
+                div_mensagem.innerHTML = `<br><b>OBS: você está vendendo por um valor abaixo da média</b><br>`;
+            }
+        } else if (orquideaSelecionada == "Cattleya") {
+            if (porteSelecionado == "Pequena") {
+                valorCompOrquidea = 125;
+            } else if (porteSelecionado == "Media") {
+                valorCompOrquidea = 150;
+            } else if (porteSelecionado == "Grande") {
+                valorCompOrquidea = 175;
+            }
+
+            if (valorUnidade < 30) {
+                div_mensagem.innerHTML = `<br><b>OBS: você está vendendo por um valor abaixo da média</b><br>`;
+            }
+        } else if (orquideaSelecionada == "Vanda") {
+            if (porteSelecionado == "Pequena") {
+                valorCompOrquidea = 200;
+            } else if (porteSelecionado == "Media") {
+                valorCompOrquidea = 250;
+            } else if (porteSelecionado == "Grande") {
+                valorCompOrquidea = 300;
+            }
+
+            if (valorUnidade < 80) {
+                div_mensagem.innerHTML = `<br><b>OBS: você está vendendo por um valor abaixo da média</b><br>`;
+            }
+        }
+
+        var valorTotalOrquidea = ((valorCompOrquidea + valorUnidade) / 2) * qtdOrquidea;
+        //pega o valor médio daquele tipo de orquidea + valor pretendido para fazer uma média em que o valor de venda
+        //de cada orquidea se torne um bom valor para sua venda num geral, após isso faz vezes a quantidade de orquidea
+        //plantada - 10% visto que segundo pesquisadores cada plantação perde cerca de 10% do total de orquideas plantadas
+
+        var valorMaoDeObra = 2500 * qtdFuncionario;
+        //     salário médio de um cuidador orquidea
+
+        var totalSemServico = valorTotalOrquidea - valorMaoDeObra;
+        var totalComServico = totalSemServico + totalSemServico * 0.12;
+
+        div_mensagem.innerHTML = `<br>Com os dados informados, sua margem financeira de lucro 
+                                pode ser de <b>R$${totalSemServico.toFixed(2)}</b> , isso levando em conta valores como
+                                mão de obra de funcionários, valor médio por unidade de orquidea, tipo de orquidea
+                                informado e possiveis perdas.<br>Com nosso serviço de monitoramentos sua margem financeira de lucro pode crescer
+                                em até 12%, chegando a valores como <b style="color: green;">R$${totalComServico.toFixed(2)}</b>`;
+    }
+</script>
