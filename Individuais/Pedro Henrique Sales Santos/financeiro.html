@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Financeiro</title>
+    
+</head>
+<style>
+    *{
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    body{
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+    #container{
+        background-color: rgb(248, 252, 255);
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 1px 1px 7px #000;
+    }
+    #div_msg{
+        width: 300px;
+    }
+</style>
+<body>
+    <div id="container">
+        <h1>Calculadora financeira</h1>
+
+        <p>Qual grupo de orquidea cultiva:</p>
+        <select name="select_orquidea" id="select_orquidea">
+            <option value="vazio"></option>
+            <option value="Cattleya">Cattleya</option>
+            <option value="Venda">Vanda</option>
+            <option value="Phalaenopsis">Phalaenopsis</option>
+        </select>
+
+       <br>
+        <p>Tamanho da plantação:</p>
+        <select name="select_tamanhoPlantacao" id="select_tamanhoPlantacao">
+            <option value="vazio"></option>
+            <option value="Pequeno">Pequeno</option>
+            <option value="Médio">Médio</option>
+            <option value="Grande">Grande</option>
+        </select>
+
+       <br>
+
+       <br>
+        <p>Quantidade média de orquideas em plantação:</p>
+        <input type="number" id="input_qtdOrquidias">
+
+       <br>
+        <p>Perdas de orquidias:</p>
+        <input type="number" id="input_perdaOrquideas">
+
+       <br><br>
+        <button onclick="financa()">Ver fianças</button>
+
+       <br><br>
+        <div id="div_msg"></div>
+    </div>
+</body>
+</html>
+
+<script>
+    var perdaCattleya = 0.45;
+    var perdaVanda = 0.35;
+    var perdaPhalaenopsis = 0.45;
+
+    var valMedioCattleya = 105;
+    var valMedioVanda = 250;
+    var valMedioPhalaenopsis = 70;
+
+    function financa() {
+        var orquidea = select_orquidea.value;
+        var perdaOrquidea = Number(input_perdaOrquideas.value);
+        var tamanhoPlantacao = select_tamanhoPlantacao.value;
+        var qtdOrquidea = Number(input_qtdOrquidias.value)
+
+        div_msg.innerHTML = " ";
+
+        // Definir tamanho da plantação
+        if (tamanhoPlantacao == "Pequeno") {
+            tamanhoPlantacao = 3000; //15 m²
+        } else if (tamanhoPlantacao == "Médio") {
+            tamanhoPlantacao = 120000; 20
+        } else {
+            tamanhoPlantacao = 700000000;
+        }
+
+        // Calcular perdas com base no tipo de orquídea
+        var perdaTotal = 0;
+        var receitaTotal = 0;
+
+        if (orquidea == "Cattleya") {
+            perdaTotal = perdaTotal + (qtdOrquidea * perdaCattleya * valMedioCattleya);
+            receitaTotal = receitaTotal + (qtdOrquidea * valMedioCattleya);
+
+            div_msg.innerHTML = `Tendo uma área de plantação de ${tamanhoPlantacao} M² da orquidea ${orquidea}, tendo ela seu preço unitario em média de <b>R$${valMedioCattleya}</b>,<br><br>`
+        }
+        if (orquidea == "Vanda") {
+            perdaTotal = perdaTotal + (qtdOrquidea * perdaVanda * valMedioVanda);
+            receitaTotal = receitaTotal + (qtdOrquidea * valMedioVanda);
+
+            div_msg.innerHTML = `Tendo uma área de plantação de ${tamanhoPlantacao} M² da orquidea ${orquidea}, tendo ela seu preço unitario em média de <b>R$${valMedioVanda}</b>,<br><br>`
+        }
+        if (orquidea == "Phalaenopsis") {
+            perdaTotal = perdaTotal + (qtdOrquidea * perdaPhalaenopsis * valMedioPhalaenopsis);
+            receitaTotal = receitaTotal + (qtdOrquidea * valMedioPhalaenopsis);
+            
+            div_msg.innerHTML = `Tendo uma área de plantação de ${tamanhoPlantacao} M² da orquidea ${orquidea}, tendo ela seu preço unitario em média de <b>R$${valMedioPhalaenopsis}</b>,<br><br>`
+        }
+
+
+        // Cálculo total de perdas mensais
+
+        // Calcular lucro atual (receita menos perdas)
+        var lucroAtual = receitaTotal - perdaTotal;
+
+        // Aplicar melhoria de 12%
+        var ganhoComProjeto = perdaTotal * 0.12;
+        var totalComProjeto = perdaTotal - ganhoComProjeto;
+        var lucroComProjeto =  receitaTotal - totalComProjeto ;
+
+        // Exibir os resultados
+        div_msg.innerHTML += `Você tem um total de perdas mensais de <b>R$${perdaTotal.toFixed(2)}</b>,<br><br>
+        Com o nosso projeto pode melhorar suas finanças em 12%, suas perdas serão reduzidas para <b>R$${totalComProjeto.toFixed(2)}</b>, aumentando seu lucro para <b>R$${lucroComProjeto.toFixed(2)}</b>.`;
+    }
+
+</script>
