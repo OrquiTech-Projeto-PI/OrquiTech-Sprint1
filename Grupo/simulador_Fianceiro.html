@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrquiTech - Simulador Fianceiro</title>
+</head>
+<body>
+    
+    <div>
+        <h1>
+            OrquiTech - Simulador Financeiro
+        </h1>
+        <h3>
+            Orquídeas são plantas extremamente sensíveis e precisam de um controle moderado de iluminação durante seu desenvolvimento, <br>
+            uma forte frequência de luminosidade nas orquídeas Phalaenopsis, Cattleya e Vanda faz com que o mercado tenha em média, um <br>prejuízo de 12%
+            em suas produções devido a iluminação inadequada.
+        </h3>
+        <h3>
+            Vamos calcular.
+        </h3>
+    </div>
+
+    <div>
+
+        <h3>Espécie de Orquidea plantada:</h3> 
+            <select id="select_orquidea">
+            <option value="Phalaenopsis">Phalaenopsis</option>
+            <option value="Cattleya">Cattleya</option>
+            <option value="Vanda">Vanda</option>
+            </select>
+
+        <br><br>
+
+        <h3>Tamanho da Plantação:</h3>
+            <select id="select_plantacao">
+            <option value="Pequena">Pequena</option>
+            <option value="Media">Média</option>
+            <option value="Grande">Grande</option>
+            </select>
+
+        <br><br>
+
+        <h3>Quantidade de Orquideas plantadas:</h3> 
+        <input type="number" id="input_qtdOrquidea" placeholder="Quantidade">
+
+        <br><br>
+
+        <h3>Gastos gerais:</h3>
+        <input type="number" id="input_gastos" placeholder="R$">
+
+        <br><br>
+
+        <h3>Valor de Venda por unidade:</h3>
+        <input type="number" id="input_venda" placeholder="R$">
+
+        <br><br>
+
+        <button onclick="calcular()">Calcular</button> 
+
+        <br><br>
+
+        <div id="div_resposta"></div>
+    </div>
+
+</body>
+</html>
+
+<script>
+
+
+    var valMC = 105;
+    var valMV = 250;
+    var vaMP = 70;
+
+    function calcular() {
+        var orquideas = Number(input_qtdOrquidea.value);
+        var orquideasPerdidas = orquideas * 0.12;
+        var gastos = Number(input_gastos.value);
+        var venda = Number(input_venda.value);
+
+        var tamanho = select_plantacao.value;
+        var tipoOrquidea = select_orquidea.value;
+
+        var lucroAtual = (orquideas - orquideasPerdidas) * venda - gastos;
+        var lucroProjeto = (orquideas - (orquideas * 0.06)) * venda - gastos;
+
+        if (orquideas <= 0) {
+            alert('Insira valores válidos');
+            div_resposta.innerHTML = ``;
+        } else if (gastos <= 0) {
+            alert('Insira valores válidos');
+            div_resposta.innerHTML = ``;
+        } else if (venda <= 0) {
+            alert('Insira valores válidos')
+            div_resposta.innerHTML = ``;
+        } else {
+        div_resposta.innerHTML = `
+        Calculo feito com sucesso! 
+        <br>
+        Seu lucro atual chega em torno de <b>R$${lucroAtual.toFixed(2)}</b> com todos os dados fornecidos.
+        <br>
+        Adiquirindo nosso projeto de monitoramento seu lucro tende a ser <span style="color: green;"><b>R$${lucroProjeto.toFixed(2)}</b></span>
+        <br><br>
+        `
+    
+        if (tamanho == "Pequena" ) {
+            if (orquideas < 120 || orquideas > 150) {
+            div_resposta.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            }
+        } 
+
+        if (tamanho == "Media" ) {
+            if (orquideas < 150 || orquideas > 600) {
+            div_resposta.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            }
+        }
+
+        if (tamanho == "Grande" ) {
+            if (orquideas < 1200 || orquideas > 6000) {
+            div_resposta.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            }
+        }
+
+        if (tipoOrquidea == "Cattleya") {
+            if (venda > valMC) {
+            div_resposta.innerHTML += `<b>Dica:</b> O valor esta a cima da media, para vendas mais efetivas recomenda-se reduzir o valor em: <b>R$${venda - valMC}</b>`;
+        } else if (venda < valMC) {
+            div_resposta.innerHTML += `<b>Dica:</b> O valor esta a baixo da media, para vendas amis lucrativas recomenda-se aumentar o valor em: <b>R$${valMC - venda}</b>`;    
+        }
+        } else if (tipoOrquidea == "Vanda") {
+        if (venda > valMV) {
+            div_resposta.innerHTML += `<b>Dica:</b> O valor esta a cima da media, para vendas mais efetivas recomenda-se reduzir o valor em: <b>R$${venda - valMV}</b>`;
+        } else if (venda < valMV) {
+            div_resposta.innerHTML += `<b>Dica:</b> O valor esta a baixo da media, para vendas amis lucrativas recomenda-se aumentar o valor em: <b>R$${valMV - venda}</b>`;
+        }
+        } else if (tipoOrquidea == "Phalaenopsis") {
+        if (venda > vaMP) {
+            div_resposta.innerHTML += `<b>Dica:</b> O valor esta a cima da media, para vendas mais efetivas recomenda-se reduzir o valor em: <b>R$${venda - vaMP}</b>`;
+        } else if (venda < vaMP) {
+            div_resposta.innerHTML += `<b>Dica:</b> O valor esta a baixo da media, para vendas amis lucrativas recomenda-se aumentar o valor em: <b>R$${vaMP - venda}</b>`;
+            
+        }
+    }
+    }
+       
+
+}
+    
+
+</script>
