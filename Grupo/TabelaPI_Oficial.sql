@@ -10,6 +10,7 @@ Pedro Henrique Sales Santos
 Vitor Gomes de Oliveira
 */
 
+-- Tabela para cadastro no Site Institucional
 create database Projeto_PI;
 use Projeto_PI;
 create table cadastro (
@@ -39,7 +40,7 @@ from cadastro;
 create table orquideas (
 id int primary key auto_increment,
 especie varchar(20) not null unique,
-luxMinimo int not null
+luxMinimo int not null,
 luxMaximo int not null
 );
 desc orquideas;
@@ -53,14 +54,15 @@ select
     concat(luxMinimo, ' até ', luxMaximo) as Lux
 from orquideas;
 
--- tabela onde aconteceram os inserts
+-- tabela onde acontecerão os inserts captado pelo arduino
 create table registro (
 id int primary key auto_increment,
 lux float not null,
 dtRegistro datetime default current_timestamp,
-idOrquidea int unique
+idOrquidea int
 );
 desc registro;
+alter table registro add constraint chkOrquidea check(idOrquidea in(1, 2, 3));
 insert into registro (lux, idOrquidea) values
 ('9895.7432', '1'),
 ('20000.34', '2'),
@@ -68,10 +70,11 @@ insert into registro (lux, idOrquidea) values
 select 
 	id as ID,
     lux as Lux,
-    dtRegistro as 'Último Registro',
+    dtRegistro as 'Tempo do Registro',
     idOrquidea as 'ID da Orquídea'
 from registro;
 
+-- Tabela para termos melhor organização e localização dos sensores
 create table sensor (
 id int primary key auto_increment,
 statusSensor varchar(12) not null,
