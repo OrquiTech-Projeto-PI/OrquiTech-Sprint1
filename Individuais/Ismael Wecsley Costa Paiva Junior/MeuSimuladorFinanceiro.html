@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Financeiro</title>
+</head>
+<body>
+<h1>Simulador Financeiro</h1>
+<br>
+qual o tipo de sua orquidea ?
+<br>
+<select name="" id="select_orquidea">
+    <option value="Vazio">Vazio</option>
+    <option value="Phalaenopsis">Phalaenopsis</option>
+    <option value="Cattleya">Cattleya</option>
+    <option value="Vanda">Vanda</option>
+</select>
+<br><br>
+qual o tamanho da sua plantação ?
+<br>
+<select name="" id="select_tamanho">
+    <option value="Vazio">Vazio</option>
+    <option value="Pequeno">Pequeno</option>
+    <option value="Médio">Médio</option>
+    <option value="Grande">Grande</option>
+</select>
+<br><br>
+qual o custo total ?
+<br>
+<input type="number" id="inp_custo">
+<br><br>
+qual o preço médio de suas orquideas ?
+<br>
+<input type="number" id="inp_preco">
+<br><br>
+qual a quantidade média de quantas orquideas são cultivadas ?
+<br>
+<input type="number" id="inp_média">
+<br><br>
+qual a quantidade média de quantas orquideas são perdidas ?
+<br>
+<input type="number" id="inp_perdas">
+<br><br>
+<button onclick="calcular()">Calcular o lucro</button>
+<br><br>
+<div id="div_mensagem"></div>
+</body>
+</html>
+<script>
+function calcular(){
+var tamanho = select_tamanho.value
+var orquidea = select_orquidea.value;
+var custo = Number(inp_custo.value);
+var cultivo = Number (inp_média.value);
+var perdas = Number (inp_perdas.value);
+var preco = Number (inp_preco.value);
+var lucroFinal = ((preco * cultivo) - (preco * perdas / 2)) - custo;
+
+if (orquidea == 'Phalaenopsis') {var lucro = ((preco * cultivo) - (preco * perdas)) - custo}
+else if (orquidea == 'Cattleya') {var lucro = ((preco * cultivo) - (preco * perdas)) - custo}
+else {var lucro = ((preco * cultivo) - (preco * perdas)) - custo};
+
+if (tamanho == 'Pequeno'){div_mensagem.innerHTML = `em seu cultivo de aproximadamente 3000 m² Seu lucro é de R$${lucro}. <br> Com nosso equipamento seu lucro seria de R$${lucroFinal}.`}
+else if (tamanho == 'Médio'){div_mensagem.innerHTML = `em seu cultivo de aproximadamente 12000 m² Seu lucro é de R$${lucro}. <br> Com nosso equipamento seu lucro seria de R$${lucroFinal}.`}
+else {div_mensagem.innerHTML = `em seu cultivo de aproximadamente 700000 m² Seu lucro é de R$${lucro}. <br> Com nosso equipamento seu lucro seria de R$${lucroFinal}.`
+}
+}
+</script>
