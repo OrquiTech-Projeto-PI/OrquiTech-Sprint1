@@ -1,16 +1,3 @@
-/*
-Grupo 7 - 
-------------OrquiTech------------
-Daniel Guimarães Santos
-Gabriel dos Santos Silverio Ramos
-Gabriel Oliveira Silva de Pietro
-Ismael Wecsley Costa Paiva Junior
-Luan Buchi de Assis
-Pedro Henrique Sales Santos
-Vitor Gomes de Oliveira
-*/
-
--- Tabela para cadastro no Site Institucional
 create database Projeto_PI;
 use Projeto_PI;
 create table cadastro (
@@ -36,7 +23,6 @@ select
     senha as Senha 
 from cadastro;
 
--- Está é uma tabela apenas de auxilio, para nós mesmos verificarmos e analisarmos para ver se a tabela registro está tudo certo.
 create table orquideas (
 id int primary key auto_increment,
 especie varchar(20) not null unique,
@@ -54,7 +40,6 @@ select
     concat(luxMinimo, ' até ', luxMaximo) as Lux
 from orquideas;
 
--- tabela onde acontecerão os inserts captado pelo arduino
 create table registro (
 id int primary key auto_increment,
 lux float not null,
@@ -74,7 +59,6 @@ select
     idOrquidea as 'ID da Orquídea'
 from registro;
 
--- Tabela para termos melhor organização e localização dos sensores
 create table sensor (
 id int primary key auto_increment,
 statusSensor varchar(12) not null,
