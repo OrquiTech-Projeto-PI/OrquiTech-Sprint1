@@ -10,7 +10,7 @@ Pedro Henrique Sales Santos
 Vitor Gomes de Oliveira
 */
 
--- Tabela para cadastro no Site Institucional
+-- Tabela para cadastro/login no Site Institucional
 create database Projeto_PI;
 use Projeto_PI;
 create table cadastro (
@@ -62,6 +62,7 @@ dtRegistro datetime default current_timestamp,
 idOrquidea int
 );
 desc registro;
+-- Check para permitir apenas inserir dados com idOrquidea 1, 2 ou 3 (para tabela comparar na tabela orquideas)
 alter table registro add constraint chkOrquidea check(idOrquidea in(1, 2, 3));
 insert into registro (lux, idOrquidea) values
 ('9895.7432', '1'),
@@ -81,6 +82,7 @@ statusSensor varchar(12) not null,
 empresaCadastro varchar(50) not null,
 estufa int not null
 );
+-- Check pois o sensor só pode estar Ativo, Inativo ou em Manutenção.
 alter table sensor add constraint chkStatus check(statusSensor in ('Ativo', 'Inativo', 'Manutenção'));
 desc sensor;
 insert into sensor (statusSensor, empresaCadastro, estufa) values
