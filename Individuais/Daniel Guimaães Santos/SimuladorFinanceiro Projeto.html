@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Financeiro</title>
+</head>
+<body>
+    
+<h1>Simulador Financeiro</h1>
+<br>
+<h3>Insira o tipo de sua orquidea:</h3>
+<input type="text" id="input_orquidea">
+<br><br>
+<h3>Insira o preço médio de suas orquideas:</h3>
+<input type="" id="input_preco">
+<br><br>
+<h3>Insira o tamanho de sua plantação:</h3>
+<input type="text" id="input_tamanho">
+<br><br>
+<h3>Insira a quantidade média de quantas orquideas são cultivadas:</h3>
+<input type="text" id="input_cultivo">
+<br><br>
+<h3>Insira a quantidade média de quantos orquideas são perdidas:</h3>
+<input type="text" id="input_perca">
+<br>
+<button onclick="calcular()">Calcular o lucro</button>
+<br><br>
+<div id="div_mensagem"></div>
+
+</body>
+</html>
+
+<script>
+
+function calcular(){
+var orquidea = input_orquidea.value
+var tamanho = Number (input_tamanho.value)
+var cultivo = Number (input_cultivo.value)
+var perca = Number (input_perca.value)
+var preco = Number (input_preco.value)
+
+
+if (orquidea == 'Phalaenopsis') {
+
+var lucro = (preco * cultivo) - (preco * perca)
+
+}
+
+else if (orquidea == 'Cattleya') {
+
+    var lucro = (preco * cultivo) - (preco * perca)
+}
+
+else if (orquidea == 'Vanda') {
+
+    var lucro = (preco * cultivo) - (preco * perca)
+
+}
+
+else { 
+
+div_mensagem.innerHTML = `Sua orquídea não está em nosso catálogo`
+
+}
+
+div_mensagem.innerHTML = `Seu lucro é de R$${lucro}`
+
+}
+
+
+
+
+</script>
