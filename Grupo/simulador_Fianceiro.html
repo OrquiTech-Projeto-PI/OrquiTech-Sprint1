@@ -36,13 +36,8 @@
 
         <br><br>
 
-        <h3>Tamanho da Plantação:</h3>
-        <select id="select_plantacao">
-            <option value="Pequena">Pequena</option>
-            <option value="Media">Média</option>
-            <option value="Grande">Grande</option>
-        </select>
-
+        <h3>Tamanho da Plantação em m²:</h3>
+        <input type="text" id="input_plantacao">
         <br><br>
 
         <h3>Quantidade de Orquideas plantadas:</h3>
@@ -73,7 +68,7 @@
 
 <script>
 
-    // Vairaveis Globais valores médios das orquideas do mercado
+
     var valMC = 105;
     var valMV = 250;
     var vaMP = 70;
@@ -84,13 +79,14 @@
         var gastos = Number(input_gastos.value);
         var venda = Number(input_venda.value);
 
-        var tamanho = select_plantacao.value;
+        var tamanho = input_plantacao.value;
         var tipoOrquidea = select_orquidea.value;
 
-        var lucroAtual = (orquideas - orquideasPerdidas) * venda - gastos; // caloculo de lucros com a venda
-        var lucroProjeto = (orquideas - (orquideas * 0.06)) * venda - gastos; // calculo de lucro da venda com o nosso projeto
+        var lucroAtual = (orquideas - orquideasPerdidas) * venda - gastos;
+        var lucroProjeto = (orquideas - (orquideas * 0.06)) * venda - gastos;
 
-        //Validações de dados fornecidos pelo usuario
+        var difLucro = lucroProjeto - lucroAtual 
+
         if (orquideas <= 0) {
             alert('Insira valores válidos');
             div_resposta.innerHTML = ``;
@@ -101,57 +97,152 @@
             alert('Insira valores válidos')
             div_resposta.innerHTML = ``;
         } else {
-            // Exibição dos calculos de lucros
             div_resposta.innerHTML = `
         Calculo feito com sucesso! 
         <br>
-        Seu lucro atual chega em torno de <b>R$${lucroAtual.toFixed(2)}</b> com todos os dados fornecidos.
+        Levando em consideração o seguinte calculo:
         <br>
-        Adiquirindo nosso projeto de monitoramento seu lucro tende a ser <span style="color: green;"><b>R$${lucroProjeto.toFixed(2)}</b></span>
-        <br><br>
-        `
+        Quantidade de Orquideas plantadas (${orquideas}) menos a porcentagem de perdas média por luminosidade (12%)  vezes o Valor de Venda por unidade (${venda.toFixed(2)}) menos os Gastos gerais (${gastos.toFixed(2)}) 
+        <br> <br>
+        O seu lucro atual chega em torno de <b>R$${lucroAtual.toFixed(2)}</b> com todos os dados fornecidos.
+        <br>
+        Adiquirindo nosso projeto de monitoramento seu lucro tende a ser <span style="color: green;"><b>R$${lucroProjeto.toFixed(2)}</b></span><br>
+        Assim tendo uma diferença de <b>R$${difLucro.toFixed(2)}</b>
+        <br>
+        `// mensagem mostrando o calculo feito e o lucro do cliente com e sem o nosso projeto
 
-            //Validação das dicas  de terreno, caso esteja plantando a mais ou menos orquideas
-            if (tamanho == "Pequena") {
-                if (orquideas < 120 || orquideas > 150) {
-                    div_resposta.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
+            // a cada 1m² cabem no máximo 12 orquideas
+            // a cada 1m² cabem no mínimo 9 orquideas
+            var orquideaMin = tamanho * 9
+            var orquideaMax = tamanho * 12
+
+            // mínimo e máximo de orquides que podem ser plantadas 
+            var difMin = orquideaMin - orquideas
+            var difMax = orquideas - orquideaMax
+            
+            // lucro atual e lucro com o nosso projeto
+            var adOrquideasAtualMin = ((orquideas + difMin) - orquideasPerdidas) * venda - gastos
+            var adOrquideasProjetoMin = ((orquideas + difMin) - ((orquideas + difMin) * 0.06)) * venda - gastos
+            var adOrquideasAtualMax = ((orquideas - difMax) - orquideasPerdidas) * venda - gastos
+            var adOrquideasProjetoMax = ((orquideas - difMax) - ((orquideas - difMax) * 0.06)) * venda - gastos
+
+            var difLucroMin = adOrquideasProjetoMin - adOrquideasAtualMin
+            var difLucroMax = adOrquideasProjetoMax - adOrquideasAtualMax
+
+
+            div_resposta.innerHTML += `Com uma plantação de ${tamanho}m² com ${orquideas} orquideas plantadas`
+            
+            // De acordo com o tamanho da estufa vai fazer a tomada de decisões 
+            if (tamanho >= 5 && tamanho <= 10) {
+                if (orquideas < orquideaMin) {
+                    div_resposta.innerHTML += `<br>Sua estufa se encaixa ao <b>Pequeno porte</b>, pois as quantidades de orquídeas esperadas para essa plantação:<br>
+                    De ${orquideaMin} no minimo á ${orquideaMax} orquídeas<br><br>
+                    Se enquadre nesse cenário para que possa ter uma produção mais saudável, realize plantado mais orquídeas, no mínimo ${difMin}<br>
+                    Isso empacta em seus lucro: <br>
+                    Sem projeto <b>R$${adOrquideasAtualMin.toFixed(2)} </b><br>
+                    Com o projeto <b style="color:green">R$${adOrquideasProjetoMin.toFixed(2)}</b><br>
+                    Tendo uma diferença de <b>R$${difLucroMin.toFixed(2)}</b>`
+
+                } else if (orquideas > orquideaMax) {
+                    div_resposta.innerHTML += `<br>Sua estufa se encaixa ao <b>Pequeno porte</b>, pois as quantidades de orquídeas esperadas para essa plantação:<br>
+                    De ${orquideaMin} no minimo á ${orquideaMax} orquídeas<br><br>
+                    Se enquadre nesse cenário para que possa ter uma produção mais saudável, realize plantado menos orquídeas, no mínimo ${difMax}.<br>
+                    Isso vai empactar diretamente em seu lucro:<br>
+                    Sem projeto <b>R$${adOrquideasAtualMax.toFixed(2)} </b><br>
+                    Com o projeto <b style="color:green">R$${adOrquideasProjetoMax.toFixed(2)}</b><br>
+                    Tendo uma diferença de <b>R$${difLucroMax.toFixed(2)}</b><br>
+                    `
+
+                    if (adOrquideasAtualMax < lucroAtual || adOrquideasProjetoMax < lucroProjeto) {
+                        div_resposta.innerHTML += `Por mais que o lucro diminua, a perda de orquídeas será menor, gerando menos prejuizos`
+
+                    }
+                } else {
+                    div_resposta.innerHTML += `<br>Sua estufa está adequada, para uma plantação de <b>Pequeno porte</b>.`
+
+                }
+            } else if (tamanho >= 11 && tamanho <= 50) {
+                if (orquideas < orquideaMin) {
+                    div_resposta.innerHTML += `<br>Sua estufa se encaixa ao <b>Médio porte</b>, pois as quantidades de orquídeas esperadas para essa plantação:<br>
+                    De ${orquideaMin} no minimo á ${orquideaMax} orquídeas<br><br>
+                    Se enquadre nesse cenário para que possa ter uma produção mais saudável, realize plantado mais orquídeas, no mínimo ${difMin}<br>
+                    Isso empacta em seus lucro: <br>
+                    Sem projeto <b>R$${adOrquideasAtualMin.toFixed(2)} </b><br>
+                    Com o projeto <b style="color:green">R$${adOrquideasProjetoMin.toFixed(2)}</b><br>
+                    Tendo uma diferença de <b>R$${difLucroMin.toFixed(2)}</b>`
+
+                } else if (orquideas > orquideaMax) {
+                    div_resposta.innerHTML += `<br>Sua estufa se encaixa ao <b>Médio porte</b>, pois as quantidades de orquídeas esperadas para essa plantação:<br>
+                    De ${orquideaMin} no minimo á ${orquideaMax} orquídeas<br><br>
+                    Se enquadre nesse cenário para que possa ter uma produção mais saudável, realize plantado menos orquídeas, no mínimo ${difMax}.<br>
+                    Isso vai empactar diretamente em seu lucro:<br>
+                    Sem projeto <b>R$${adOrquideasAtualMax.toFixed(2)} </b><br>
+                    Com o projeto <b style="color:green">R$${adOrquideasProjetoMax.toFixed(2)}</b><br>
+                    Tendo uma diferença de <b>R$${difLucroMax.toFixed(2)}</b><br>
+                    `
+
+                    if (adOrquideasAtualMax < lucroAtual || adOrquideasProjetoMax < lucroProjeto) {
+                        div_resposta.innerHTML += `Por mais que o lucro diminua, a perda de orquídeas será menor, gerando menos prejuizos`
+
+                    }
+                } else {
+                    div_resposta.innerHTML += `<br>Sua estufa está adequada, para uma plantação de <b>Médio porte</b>.`
+
+                }
+            } else if (tamanho >= 51 && tamanho <= 500) {
+                if (orquideas < orquideaMin) {
+                    div_resposta.innerHTML += `<br>Sua estufa se encaixa ao <b>Grande porte</b>, pois as quantidades de orquídeas esperadas para essa plantação:<br>
+                    De ${orquideaMin} no minimo á ${orquideaMax} orquídeas<br><br>
+                    Se enquadre nesse cenário para que possa ter uma produção mais saudável, realize plantado mais orquídeas, no mínimo ${difMin}<br>
+                    Isso empacta em seus lucro: <br>
+                    Sem projeto <b>R$${adOrquideasAtualMin.toFixed(2)} </b><br>
+                    Com o projeto <b style="color:green">R$${adOrquideasProjetoMin.toFixed(2)}</b><br>
+                    Tendo uma diferença de <b>R$${difLucroMin.toFixed(2)}</b>`
+
+                } else if (orquideas > orquideaMax) {
+                    div_resposta.innerHTML += `<br>Sua estufa se encaixa ao <b>Grande porte</b>, pois as quantidades de orquídeas esperadas para essa plantação:<br>
+                    De ${orquideaMin} no minimo á ${orquideaMax} orquídeas<br><br>
+                    Se enquadre nesse cenário para que possa ter uma produção mais saudável, realize plantado menos orquídeas, no mínimo ${difMax}.<br>
+                    Isso vai empactar diretamente em seu lucro:<br>
+                    Sem projeto <b>R$${adOrquideasAtualMax.toFixed(2)} </b><br>
+                    Com o projeto <b style="color:green">R$${adOrquideasProjetoMax.toFixed(2)}</b><br>
+                    Tendo uma diferença de <b>R$${difLucroMax.toFixed(2)}</b><br>
+                    `
+
+                    if (adOrquideasAtualMax < lucroAtual || adOrquideasProjetoMax < lucroProjeto) {
+                        div_resposta.innerHTML += `Por mais que o lucro diminua, a perda de orquídeas será menor, gerando menos prejuizos`
+
+                    }
+                } else {
+                    div_resposta.innerHTML += `<br>Sua estufa está adequada, para uma plantação de <b>Grande porte</b>.`
+
                 }
             }
 
-            if (tamanho == "Media") {
-                if (orquideas < 150 || orquideas > 600) {
-                    div_resposta.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
-                }
-            }
 
-            if (tamanho == "Grande") {
-                if (orquideas < 1200 || orquideas > 6000) {
-                    div_resposta.innerHTML += `<b>Dica:</b> Você deveria trocar o tamanho da plantação para ter menos percas no cultivo!<br>`;
-                }
-            }
-
-            // Validação de deicas, caso o valor das orquídeas esteja acima ou abaixo da média do mercado
             if (tipoOrquidea == "Cattleya") {
                 if (venda > valMC) {
-                    div_resposta.innerHTML += `<b>Dica:</b> O valor esta a cima da média, para vendas mais efetivas recomenda-se reduzir o valor em: <b>R$${venda - valMC}</b>`;
+                    div_resposta.innerHTML += `<br><br><b>Dica:</b> O valor esta a cima da media, para vendas mais efetivas recomenda-se reduzir o valor em: <b>R$${venda - valMC}</b>`;
                 } else if (venda < valMC) {
-                    div_resposta.innerHTML += `<b>Dica:</b> O valor esta a baixo da média, para vendas amis lucrativas recomenda-se aumentar o valor em: <b>R$${valMC - venda}</b>`;
+                    div_resposta.innerHTML += `<br><br><b>Dica:</b> O valor esta a baixo da media, para vendas amis lucrativas recomenda-se aumentar o valor em: <b>R$${valMC - venda}</b>`;
                 }
             } else if (tipoOrquidea == "Vanda") {
                 if (venda > valMV) {
-                    div_resposta.innerHTML += `<b>Dica:</b> O valor esta a cima da média, para vendas mais efetivas recomenda-se reduzir o valor em: <b>R$${venda - valMV}</b>`;
+                    div_resposta.innerHTML += `<br><br><b>Dica:</b> O valor esta a cima da media, para vendas mais efetivas recomenda-se reduzir o valor em: <b>R$${venda - valMV}</b>`;
                 } else if (venda < valMV) {
-                    div_resposta.innerHTML += `<b>Dica:</b> O valor esta a baixo da média, para vendas amis lucrativas recomenda-se aumentar o valor em: <b>R$${valMV - venda}</b>`;
+                    div_resposta.innerHTML += `<br><b>Dica:</b> O valor esta a baixo da media, para vendas amis lucrativas recomenda-se aumentar o valor em: <b>R$${valMV - venda}</b>`;
                 }
             } else if (tipoOrquidea == "Phalaenopsis") {
                 if (venda > vaMP) {
-                    div_resposta.innerHTML += `<b>Dica:</b> O valor esta a cima da média, para vendas mais efetivas recomenda-se reduzir o valor em: <b>R$${venda - vaMP}</b>`;
+                    div_resposta.innerHTML += `<br><br><b>Dica:</b> O valor esta a cima da media, para vendas mais efetivas recomenda-se reduzir o valor em: <b>R$${venda - vaMP}</b>`;
                 } else if (venda < vaMP) {
-                    div_resposta.innerHTML += `<b>Dica:</b> O valor esta a baixo da média, para vendas amis lucrativas recomenda-se aumentar o valor em: <b>R$${vaMP - venda}</b>`;
+                    div_resposta.innerHTML += `<br><br><b>Dica:</b> O valor esta a baixo da media, para vendas amis lucrativas recomenda-se aumentar o valor em: <b>R$${vaMP - venda}</b>`;
 
                 }
             }
         }
+
+
     }
 
 
