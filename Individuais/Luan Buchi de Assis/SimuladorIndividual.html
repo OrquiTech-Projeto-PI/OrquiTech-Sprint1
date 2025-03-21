@@ -7,7 +7,7 @@
 </head>
 <body style="background-color: #cecece;">
 
-<header style="background-color: #2E7D32;">
+<header style="background-color: #2e437d;">
     <div>
         <h1>
             Simulador Financeiro
@@ -18,26 +18,35 @@
     <div>
         <h3>
             Orquídeas são plantas extremamentes sensíveis e precisam de um controle moderado de iluminação durante seu desenvolvimento, <br>
-            uma forte frequência de luminosidade nas orquídeas Phalaenopsis, Cattleya e Vanda faz com que o mercado tenha em média um <br>prejuízo de 12%
-            de suas produções devido a iluminação indevida.
-        </h3>
-        <h3>
-            Vamos calcular.
+            uma forte frequência de luminosidade nas orquídeas Phalaenopsis, Cattleya e Vanda faz com que o mercado tenha em média um <br>
+            prejuízo de 12% de suas produções devido a iluminação inadequada.
+            <br>
+            <br>
+            Para calcularmos uma margem de lucro que nosso cliente possui sem nosso sistema, e comparando com a mesma situação, porém <br>
+            dessa vez com a utilização de nosso sistema precisamos das seguinte informações:
         </h3>
     </div>
 <br>
     <div>
+        <h3>
+            Selecione a espécie da orquídea
+        </h3>
+        <select id="selectEspecies">
+            <option>Phalaenopsis</option>
+            <option>Cattleya</option>
+            <option>Vanda</option>
+        </select>
         <h3>
             Número de orquídeas cultivadas
         </h3>
         <input type="text" id="inputOrq">
         <br><br>
         <h3>
-            Custo médio de 1 orquídea
+            Valor da venda de 1 orquídea
         </h3>
         <input type="text" id="inputCusto">
         <br><br>
-        <button style="background-color: #42A5F5;" onclick="calcular()">Calcular</button>
+        <button style="background-color: #daa7e4;" onclick="calcular()">Calcular</button>
     </div>
 <br><br>
     <div id="div_mensagem">
@@ -51,16 +60,21 @@
     function calcular() {
     var orquideas = Number(inputOrq.value) * 0.12;
     var preco = Number(inputCusto.value);
+    var especie = selectEspecies.value;
+
     var prejuizo = preco * orquideas; 
     var lucro = prejuizo - (prejuizo * 0.5);
+    var diferenca = lucro - prejuizo;
     
     if (orquideas <= 0) {
         alert('Os valores não podem ser nulos. Insira valores reais!')
     } else if (preco <= 0) {
         alert('Os valores não podem ser nulos. Insira valores reais!')
     } else {
-        div_mensagem.innerHTML = ` Considerando que 12% do total de orquídeas são perdidas, você enfrentará, em média, um prejuízo de <span style="color: red;"><b>R$${prejuizo}</b></span>. <br>
-                            Adquirindo nosso produto, você poderá obter um retorno médio de <b>PELO MENOS</b> <span style="color: green;"><b>R$${lucro}</b></span> de lucro, reduzindo 50% do seu prejuízo!`
+        div_mensagem.innerHTML = ` <b>Calculo feito com sucesso!</b><br>
+                            Considerando que 12% do total de orquídeas da espécie <span style="color: blue;"><b>${especie}</b></span> são perdidas, você enfrentará, em média, um prejuízo de <span style="color: red;"><b>R$${prejuizo.toFixed(2)}</b></span>. <br>
+                            Adquirindo nosso produto, você obterá um retorno médio de <b>PELO MENOS</b> <span style="color: green;"><b>R$${lucro.toFixed(2)}</b></span>, reduzindo 50% do seu prejuízo! <br>
+                            A diferença que você terá com o nosso equipamento é de <span style="color: blue;"><b>R$${diferenca.toFixed(2) * (-1)}</b></span>.`
     }
 }
 
