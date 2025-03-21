@@ -49,9 +49,9 @@ idOrquidea int
 desc registro;
 alter table registro add constraint chkOrquidea check(idOrquidea in(1, 2, 3));
 insert into registro (lux, idOrquidea) values
-('9895.7432', '1'),
-('20000.34', '2'),
-('41351.89', '3');
+('1850.32', '1'),
+('2006.34', '2'),
+('7351.89', '3');
 select 
 	id as ID,
     lux as Lux,
