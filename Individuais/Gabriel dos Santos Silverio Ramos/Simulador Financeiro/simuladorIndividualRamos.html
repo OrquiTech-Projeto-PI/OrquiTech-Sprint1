@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador financeiro</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .main-content {
+        background-color: #c2c2c2;
+        padding: 25px;
+        border-radius: 15px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+        gap: 20px;
+        min-width: 500px;
+        min-height: 425px;
+        box-shadow: 10px 10px 61px 0px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 10px 10px 61px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 10px 10px 61px 0px rgba(0, 0, 0, 0.75);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-content">
+      <h1>Simulador financeiro</h1>
+
+      <label for="iptQntOrquideas">Quantidade de orquídeas plantadas:</label>
+      <input type="number" placeholder="Exemplo: 1000" id="iptQntOrquideas" />
+
+      <label for="">Espécie da orquídea:</label>
+      <select name="especieOrquidea" id="iptEspecie">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      </select>
+
+      <label for="iptValorOrquidea">Valor médio por orquídea (R$):</label>
+      <input
+        type="number"
+        placeholder="Exemplo: R$25,00"
+        id="iptValorOrquidea"
+      />
+
+      <button onclick="calcular()">Calcular valores</button>
+
+      <div id="mensagem"></div>
+    </div>
+  </body>
+</html>
+
+<script>
+  function calcular() {
+    let qntOrquideas = Number(iptQntOrquideas.value);
+    let valorOrquidea = Number(iptValorOrquidea.value);
+    let valorTotal = qntOrquideas * valorOrquidea;
+    let valorPerda = valorTotal * 0.12;
+    let valorComPerda = valorTotal - valorPerda;
+    let valorPerdaSistema = valorComPerda / 2;
+
+    mensagem.innerHTML = `
+    Segundo os cálculos, o valor total das orquídeas é de: <b>R$${valorTotal.toFixed(
+      2
+    )}</b> <br>
+    A perda por conta de iluminação inapropriada é de: <b>R$${valorPerda.toFixed(
+      2
+    )}</b>. <br>
+    Porém, utilizando o sistema, o valor vai para <b>R$${valorPerdaSistema.toFixed(
+      2
+    )}</b>.
+    `;
+  }
+</script>
